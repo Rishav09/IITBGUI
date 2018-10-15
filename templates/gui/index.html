@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script></head>
+        <body>
+                <form action = Post>
+                    Enter Sentence:<input id = "name" type = "text" name = "EnterSentence" encoding = "utf-8"><br>
+                    <input onclick = "testfunction()" type = "button" value = "Submit" >
+                </form>
+                <div id = "div1"><h2><strong>Score is  </strong></div>
+                <div id = "neg"></div>
+                <div id = "neu"></div>
+                <div id = "pos"></div>
+                <div id = "compound"></div>
+    </body>
+    <script>
+    var testfunction = () => {
+    var test = document.getElementById("name").value
+    var sentiment
+
+    $.ajax({
+             dataType: "json",
+             url: 'output/',
+             type: "POST",
+             data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                   'name': test
+                    },
+                    success: function(response) {
+                    $("#div1").html(response);
+                    console.log("Succesful return firm ajax call");
+                    console.log(response)
+                    sentiment = response
+                   document.getElementById("neg").innerHTML = "Negative:"+sentiment.sentiment.neg
+                    document.getElementById("neu").innerHTML = "Neutral:"+sentiment.sentiment.neu
+                    document.getElementById("pos").innerHTML = "Positive:"+sentiment.sentiment.pos
+                    document.getElementById("compound").innerHTML = "Compound"+sentiment.sentiment.compound
+                    },
+                    error: function(result){
+                    console.log(result);
+                    }
+             });
+
+    }
+    </script>
+</html>
+

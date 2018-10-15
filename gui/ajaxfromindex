@@ -1,0 +1,24 @@
+<input onclick = "testfunction()" type = "button" value = "Submit" >
+<script>
+var testfunction = () => {
+    var test = document.getElementById("name").value
+    console.log(test)
+
+    $.ajax({
+             type: "POST",
+             dataType: "json",
+             url: 'output/',
+             data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                   'name': test
+                    },
+                    success: function(response) {
+                    console.log("Succesful return firm ajax call");
+                    },
+                    error: function(result){
+                    console.log("Failure");
+                    }
+             });
+
+    }
+    </script>
